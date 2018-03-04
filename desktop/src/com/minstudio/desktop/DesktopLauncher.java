@@ -7,8 +7,8 @@ import com.minstudio.GameMain;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1024;
-		config.height = 768;
+		config.width = 750;
+		config.height = 1000;
 		new LwjglApplication(new GameMain(new DesktopGameInput()), config);
 	}
 }

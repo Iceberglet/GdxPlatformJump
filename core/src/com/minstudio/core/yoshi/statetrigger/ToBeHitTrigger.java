@@ -3,10 +3,10 @@ package com.minstudio.core.yoshi.statetrigger;
 import com.minstudio.core.Context;
 import com.minstudio.core.yoshi.Yoshi;
 
-public class ToBeHitTrigger extends StateTrigger {
+public class ToBeHitTrigger extends AbstractStateTrigger {
 
-    public ToBeHitTrigger(Yoshi.State from) {
-        super(from, Yoshi.State.HIT);
+    public ToBeHitTrigger() {
+        super(Yoshi.State.HIT);
     }
 
     @Override
@@ -22,4 +22,8 @@ public class ToBeHitTrigger extends StateTrigger {
         return false;
     }
 
+    @Override
+    public void doTrigger(Yoshi yoshi, Context context) {
+        super.doTrigger(yoshi, context);
+    }
 }

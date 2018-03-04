@@ -1,27 +1,29 @@
 package com.minstudio.core.yoshi.statetrigger;
 
 import com.minstudio.core.Context;
+import com.minstudio.core.yoshi.Logger;
 import com.minstudio.core.yoshi.Yoshi;
 
-public class JumpTrigger extends AbstractStateTrigger {
+public abstract class AbstractStateTrigger implements StateTrigger {
 
-    public JumpTrigger() {
-        super(Yoshi.State.JUMP);
+    public final Yoshi.State toState;
+
+    public AbstractStateTrigger(Yoshi.State toState) {
+        this.toState = toState;
     }
 
     @Override
     public void resetTrigger(Yoshi yoshi, Context context) {
-
+        Logger.info(this, "reset");
     }
 
     @Override
     public boolean isTriggered(Yoshi yoshi, Context context) {
-        return context.getGameInput().isUp();
+        return false;
     }
 
     @Override
     public void doTrigger(Yoshi yoshi, Context context) {
-        super.doTrigger(yoshi, context);
-        yoshi.getCurrentSpeed().y = Context.YOSHI_JUMP_SPEED;
+        Logger.info(this, "triggered");
     }
 }

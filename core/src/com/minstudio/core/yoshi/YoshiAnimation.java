@@ -14,14 +14,16 @@ import com.badlogic.gdx.math.Vector2;
 public class YoshiAnimation {
 
     public enum AnimationType {
-        RUN, NORMAL, HIT, EAT
+        RUN, NORMAL, HIT, EAT, TONGUE, DJUMP
     }
 
     private static int FRAME_SIZE = 48;
     private static int FRAME_LENGTH = 11;
 
-    private static float RUNNING_FPS = 0.1f;
-    private static float EAT_FPS = 0.1f;
+    public static final long RUNNING_DURATION = 600L;
+    public static final long EAT_DURATION = 400L;
+    public static final long HIT_DURATION = 400L;
+    public static final long TONGUE_DURATION = 600L;
 
     private Vector2 offset;
 
@@ -41,13 +43,15 @@ public class YoshiAnimation {
             offset = new Vector2(-FRAME_SIZE / 3, 0);
         }
 
-        animations.put(AnimationType.RUN, new Animation<>(RUNNING_FPS, Arrays.copyOfRange(frames, 0, 6)));
-        animations.put(AnimationType.NORMAL, new Animation<>(1, frames[0]));
-        animations.put(AnimationType.HIT, new Animation<>(1, frames[10]));
-        animations.put(AnimationType.EAT, new Animation<>(EAT_FPS, Arrays.copyOfRange(frames, 6, 10)));
+        animations.put(AnimationType.RUN, new Animation<>(RUNNING_DURATION / 6000f, Arrays.copyOfRange(frames, 0, 6)));
+        animations.put(AnimationType.NORMAL, new Animation<>(1f, frames[0]));
+        animations.put(AnimationType.HIT, new Animation<>(HIT_DURATION, frames[10]));
+        animations.put(AnimationType.TONGUE, new Animation<>(TONGUE_DURATION, frames[6]));
+        animations.put(AnimationType.EAT, new Animation<>(EAT_DURATION / 4000f, Arrays.copyOfRange(frames, 7, 10)));
     }
 
     public void draw(SpriteBatch batch, Vector2 pos, AnimationType type, float deltaTime) {
+//        Logger.info(this, pos + " " + type + " " + deltaTime);
         batch.draw(animations.get(type).getKeyFrame(deltaTime, true), pos.x + offset.x, pos.y + offset.y);
     }
 
