@@ -45,6 +45,7 @@ public class Context {
         this.currentTimestamp = 0L;
         //TODO: remove test
         hardObjects.add(new Platform(128, 256));
+        hardObjects.add(new Platform(128, 360));
     }
 
     /**

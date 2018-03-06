@@ -10,7 +10,11 @@ public class Resources {
     private static Map<String, Texture> textureResources = new HashMap<>();
 
     public static synchronized Texture getTexture(String path){
-        return textureResources.computeIfAbsent(path, (p)-> new Texture(path));
+        return textureResources.computeIfAbsent(path, (p)-> {
+            Texture res = new Texture(path);
+            res.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+            return res;
+        });
     }
 
     public static void dispose(){

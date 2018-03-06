@@ -12,6 +12,6 @@ public class Platform extends GameObject {
     @Override
     public void draw(SpriteBatch batch) {
         batch.draw(TextureLoader.getHardPlatform(), this.getRectangle().x, this.getRectangle().y);
-        batch.draw(TextureLoader.getHardPlatform(), this.getRectangle().x + 32, this.getRectangle().y);
+        batch.draw(TextureLoader.getHardPlatform(), this.getRectangle().x + 31.95f, this.getRectangle().y);
     }
 }

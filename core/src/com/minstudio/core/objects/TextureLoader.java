@@ -8,11 +8,10 @@ import com.minstudio.core.Resources;
 
 public class TextureLoader {
 
-    private static Texture texture;
     private static TextureRegion[] frames;
 
     public static void init() {
-        texture = Resources.getTexture("sprites/items.png");
+        Texture texture = Resources.getTexture("sprites/items.png");
 
         frames = new TextureRegion[9];
         TextureRegion[][] tempFrames = TextureRegion.split(texture, 32, 32);

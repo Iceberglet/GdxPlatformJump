@@ -44,7 +44,7 @@ public class YoshiAnimation {
         }
 
         animations.put(AnimationType.RUN, new Animation<>(RUNNING_DURATION / 6000f, Arrays.copyOfRange(frames, 0, 6)));
-        animations.put(AnimationType.NORMAL, new Animation<>(1f, frames[0]));
+        animations.put(AnimationType.NORMAL, new Animation<>(1f, frames[3]));
         animations.put(AnimationType.HIT, new Animation<>(HIT_DURATION, frames[10]));
         animations.put(AnimationType.TONGUE, new Animation<>(TONGUE_DURATION, frames[6]));
         animations.put(AnimationType.EAT, new Animation<>(EAT_DURATION / 4000f, Arrays.copyOfRange(frames, 7, 10)));

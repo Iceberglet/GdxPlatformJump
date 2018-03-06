@@ -13,11 +13,10 @@ public class GridRenderer {
     private int gridNoY;
     private int gridSize;
     private float gridThicknessPx;
-    private Texture img;
     private TextureRegion rect;
 
     public GridRenderer(SpriteBatch batch, int startX, int startY, int gridNoX, int gridNoY, int gridSize, float gridThicknessPx) {
-        img = Resources.getTexture("sprites/white-dot.png");
+        Texture img = Resources.getTexture("sprites/white-dot.png");
         rect = new TextureRegion(img, 0, 0, 1, 1);
         this.batch = batch;
         this.startX = startX;
