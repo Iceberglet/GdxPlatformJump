@@ -13,4 +13,6 @@ public interface GameInput {
     boolean isRightPressed();
 
     boolean isKeyPressed(int keyCode);
+
+    boolean isSpaceDown();
 }

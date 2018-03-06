@@ -8,10 +8,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.minstudio.GameInput;
+import com.minstudio.GameMain;
 import com.minstudio.core.objectFactories.AbstractFactory;
 import com.minstudio.core.objects.GameObject;
 import com.minstudio.core.objects.Platform;
@@ -29,6 +32,8 @@ public class Context {
 
     public static float YOSHI_JUMP_SPEED = 0.46f;
 
+    public static float CAMERA_ASCEND = 0.01f;
+
     private Collection<GameObject> gameObjects; //eateables
 
     private Collection<GameObject> hardObjects = new ArrayList<>(); //platforms
@@ -37,11 +42,14 @@ public class Context {
 
     private GameInput gameInput;
 
+    private Camera camera;
+
     private long currentTimestamp;
 
-    public Context(Yoshi yoshi, GameInput gameInput) {
+    public Context(Camera camera, Yoshi yoshi, GameInput gameInput) {
         this.yoshi = yoshi;
         this.gameInput = gameInput;
+        this.camera = camera;
         this.currentTimestamp = 0L;
         //TODO: remove test
         hardObjects.add(new Platform(128, 256));
@@ -64,11 +72,10 @@ public class Context {
         }
     }
 
-    public List<GameObject> tempCollideWithYoshi;
-
     public void update() {
         long deltaTime = Math.round(Gdx.graphics.getDeltaTime() * 1000);
         this.currentTimestamp += deltaTime;
+        this.camera.position.y += deltaTime * CAMERA_ASCEND;
 
         //update horizontal and vertical speed
         Vector2 speed = yoshi.getCurrentSpeed();
@@ -88,9 +95,8 @@ public class Context {
 
         //collision checks for other objects (e.g. yoshi eats apple)
 
-        this.hardObjects.forEach(ho -> yoshi.collidesWith(ho, true));
-
         //collision checks for movement-impeding objects (e.g. yoshi stops falling / stops going left or right)
+        this.hardObjects.forEach(ho -> yoshi.collidesWith(ho, true));
 
         //register all collided objects
 
@@ -105,8 +111,14 @@ public class Context {
             theTrigger.toState.getTriggers().forEach(t -> t.resetTrigger(yoshi, this));
         }
 
+
+        //clamp Yoshi within view port
+
+        float posX = MathUtils.clamp(yoshi.getPosition().x, 0f, GameMain.CAMERA_WIDTH - 32);
+        float posY = Math.min(GameMain.CAMERA_HEIGHT / 2 + camera.position.y - 32, yoshi.getPosition().y);
+        yoshi.setPosition(posX, posY);
+
 //        Logger.info(this, yoshi.getCurrentState() + " " + yoshi.getCurrentSpeed() + " " + yoshi.getPosition());
-        //obtain current animation frame with yoshi state
     }
 
     public GameInput getGameInput() {

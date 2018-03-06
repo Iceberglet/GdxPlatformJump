@@ -35,4 +35,9 @@ public class DesktopGameInput implements GameInput {
     public boolean isKeyPressed(int keyCode){
         return Gdx.input.isKeyPressed(keyCode);
     }
+
+    @Override
+    public boolean isSpaceDown() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+    }
 }
