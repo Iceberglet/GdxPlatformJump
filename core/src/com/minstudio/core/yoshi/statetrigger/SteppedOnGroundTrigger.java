@@ -16,7 +16,7 @@ public class SteppedOnGroundTrigger extends AbstractStateTrigger {
 
     @Override
     public boolean isTriggered(Yoshi yoshi, Context context) {
-        return false;
+        return yoshi.previousCollisionDirection == 3;
     }
 
     @Override

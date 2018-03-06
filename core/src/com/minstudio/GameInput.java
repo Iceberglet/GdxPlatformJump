@@ -2,13 +2,15 @@ package com.minstudio;
 
 public interface GameInput {
 
-    boolean isUp();
+    boolean isUpDown();
+
+    boolean isUpPressed();
 
     boolean isDown();
 
-    boolean isLeft();
+    boolean isLeftPressed();
 
-    boolean isRight();
+    boolean isRightPressed();
 
     boolean isKeyPressed(int keyCode);
 }

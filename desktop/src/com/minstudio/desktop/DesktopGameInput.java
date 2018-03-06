@@ -7,7 +7,12 @@ import com.minstudio.GameInput;
 public class DesktopGameInput implements GameInput {
 
     @Override
-    public boolean isUp() {
+    public boolean isUpDown() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.UP);
+    }
+
+    @Override
+    public boolean isUpPressed() {
         return Gdx.input.isKeyPressed(Input.Keys.UP);
     }
 
@@ -17,12 +22,12 @@ public class DesktopGameInput implements GameInput {
     }
 
     @Override
-    public boolean isLeft() {
+    public boolean isLeftPressed() {
         return Gdx.input.isKeyPressed(Input.Keys.LEFT);
     }
 
     @Override
-    public boolean isRight() {
+    public boolean isRightPressed() {
         return Gdx.input.isKeyPressed(Input.Keys.RIGHT);
     }
 

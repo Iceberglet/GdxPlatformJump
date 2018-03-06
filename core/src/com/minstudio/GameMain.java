@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.minstudio.core.Context;
 import com.minstudio.core.GridRenderer;
 import com.minstudio.core.Resources;
+import com.minstudio.core.objects.TextureLoader;
 import com.minstudio.core.yoshi.Yoshi;
 
 public class GameMain extends ApplicationAdapter {
@@ -37,9 +38,10 @@ public class GameMain extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 256 + 128, 512);
 //		camera.zoom = 0.25f;
-		yoshi = new Yoshi(new Rectangle(-24, 0, 32, 32));
+		yoshi = new Yoshi(new Rectangle(128, 280, 32, 32));
 		context = new Context(yoshi, gameInput);
 		gridRenderer = new GridRenderer(batch, 0, 0, 20, 20, 32, 0.2f);
+		TextureLoader.init();
 	}
 
 	@Override

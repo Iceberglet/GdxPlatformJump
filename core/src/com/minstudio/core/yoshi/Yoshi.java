@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.minstudio.core.Resources;
 import com.minstudio.core.objects.BoxCollider;
+import com.minstudio.core.objects.GameObject;
 import com.minstudio.core.yoshi.statetrigger.AbstractStateTrigger;
 import com.minstudio.core.yoshi.statetrigger.AnimationStopTrigger;
 import com.minstudio.core.yoshi.statetrigger.DJumpTrigger;
@@ -21,15 +22,15 @@ import com.minstudio.core.yoshi.statetrigger.SteppedOnGroundTrigger;
 import com.minstudio.core.yoshi.statetrigger.ToBeHitTrigger;
 import com.minstudio.core.yoshi.statetrigger.TongueTrigger;
 
-public class Yoshi extends BoxCollider {
+public class Yoshi extends GameObject {
 
     /**
      * Each Yoshi.State has a corresponding Animation
      */
     public enum State {
         IDLE(0, YoshiAnimation.AnimationType.NORMAL),
-        JUMP(7, YoshiAnimation.AnimationType.NORMAL),
-        DJUMP(7, YoshiAnimation.AnimationType.NORMAL),
+        JUMP(7, YoshiAnimation.AnimationType.JUMP),
+        DJUMP(7, YoshiAnimation.AnimationType.JUMP),
         RUN(6, YoshiAnimation.AnimationType.RUN),
         HIT(10, YoshiAnimation.AnimationType.HIT),
         TONGUE(8, YoshiAnimation.AnimationType.TONGUE),
@@ -70,7 +71,7 @@ public class Yoshi extends BoxCollider {
         State.IDLE.setTriggers(eatTrigger, jumpTrigger, toBeHitTrigger, runStartTrigger, tongueTrigger);
         State.JUMP.setTriggers(steppedOnGroundTrigger, dJumpTrigger, toBeHitTrigger, tongueTrigger);
         State.DJUMP.setTriggers(steppedOnGroundTrigger, toBeHitTrigger, tongueTrigger);
-        State.RUN.setTriggers(runStopTrigger, toBeHitTrigger, tongueTrigger, eatTrigger);
+        State.RUN.setTriggers(runStopTrigger, toBeHitTrigger, tongueTrigger, eatTrigger, jumpTrigger);
         State.HIT.setTriggers(recoverFromHitTrigger);
         State.TONGUE.setTriggers(toBeHitTrigger, tongueStopTrigger, eatTrigger);
         State.EAT.setTriggers(toBeHitTrigger, stopEatTrigger);
@@ -82,7 +83,6 @@ public class Yoshi extends BoxCollider {
 
     private State currentState;
     private Vector2 currentSpeed;
-    private Vector2 currentPos;
     private long currentStateDuration;
     private YoshiAnimation yoshiAnimationLeft;
     private YoshiAnimation yoshiAnimationRight;
@@ -93,7 +93,6 @@ public class Yoshi extends BoxCollider {
         this.isFacingRight = true;
         this.currentState = State.IDLE;
         this.currentSpeed = new Vector2(0, 0);  //cannot use Vector2.Zero
-        this.currentPos = new Vector2(0, 0);
         yoshiAnimationLeft = new YoshiAnimation(img, true);
         yoshiAnimationRight = new YoshiAnimation(img, false);
     }
@@ -122,13 +121,15 @@ public class Yoshi extends BoxCollider {
 
     public void update(long deltaTime) {
         this.currentStateDuration += deltaTime;
-        this.currentPos.x += deltaTime * this.currentSpeed.x;
-        this.currentPos.y += deltaTime * this.currentSpeed.y;
+        Vector2 pos = this.getPosition();
+        this.setPosition(deltaTime * this.currentSpeed.x + pos.x, deltaTime * this.currentSpeed.y + pos.y);
+        this.previousCollisionDirection = -1;
     }
 
-    public void render(SpriteBatch batch) {
+    @Override
+    public void draw(SpriteBatch batch) {
         YoshiAnimation ani = this.isFacingRight ? yoshiAnimationRight : yoshiAnimationLeft;
-        ani.draw(batch, currentPos, currentState.animationType, currentStateDuration / 1000f);
+        ani.draw(batch, this.getPosition(), currentState.animationType, currentStateDuration / 1000f);
     }
 
     @Override
@@ -138,5 +139,70 @@ public class Yoshi extends BoxCollider {
 
     public void dispose() {
         img.dispose();
+    }
+
+    //cleared every update
+    //-1: no collision
+    // 1: top
+    // 2: right
+    // 3: btm
+    // 4: left
+    public int previousCollisionDirection = -1;
+
+    @Override
+    protected void restoreFromCollision(float deltaX, float deltaY, BoxCollider collider) {
+        float l = Math.abs(collider.getRectangle().x - this.getRectangle().width - this.getRectangle().x);
+        float t = Math.abs(collider.getRectangle().y + collider.getRectangle().height - this.getRectangle().y);
+        float r = Math.abs(collider.getRectangle().x + collider.getRectangle().width - this.getRectangle().x);
+        float b = Math.abs(collider.getRectangle().y - this.getRectangle().width - this.getRectangle().y);
+
+        if(deltaX >= 0 && deltaY >= 0){
+            //we move either left or btm
+            if(l < b){
+                this.getRectangle().x -= l;
+                this.currentSpeed.x = 0f;
+                this.previousCollisionDirection = 2;
+            } else {
+                this.getRectangle().y -= b;
+                this.currentSpeed.y = 0f;
+                this.previousCollisionDirection = 1;
+            }
+        }
+        else if(deltaX < 0 && deltaY >= 0){
+            //we move either right or btm
+            if(r < b){
+                this.getRectangle().x += r;
+                this.currentSpeed.x = 0f;
+                this.previousCollisionDirection = 4;
+            } else {
+                this.getRectangle().y -= b;
+                this.currentSpeed.y = 0f;
+                this.previousCollisionDirection = 1;
+            }
+        }
+        else if(deltaX < 0 && deltaY < 0){
+            //we move either right or top
+            if(r < t){
+                this.getRectangle().x += r;
+                this.currentSpeed.x = 0f;
+                this.previousCollisionDirection = 4;
+            } else {
+                this.getRectangle().y += t;
+                this.currentSpeed.y = 0f;
+                this.previousCollisionDirection = 3;
+            }
+        }
+        else if(deltaX >= 0 && deltaY < 0){
+            //we move either left or top
+            if(l < t){
+                this.getRectangle().x -= l;
+                this.currentSpeed.x = 0f;
+                this.previousCollisionDirection = 2;
+            } else {
+                this.getRectangle().y += t;
+                this.currentSpeed.y = 0f;
+                this.previousCollisionDirection = 3;
+            }
+        }
     }
 }

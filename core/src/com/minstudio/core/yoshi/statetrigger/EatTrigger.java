@@ -11,7 +11,7 @@ public class EatTrigger extends AbstractStateTrigger {
 
     @Override
     public void resetTrigger(Yoshi yoshi, Context context) {
-        super.resetTrigger(yoshi, context);
+
     }
 
     @Override

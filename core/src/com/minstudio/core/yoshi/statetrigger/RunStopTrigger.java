@@ -16,7 +16,7 @@ public class RunStopTrigger extends AbstractStateTrigger {
 
     @Override
     public boolean isTriggered(Yoshi yoshi, Context context) {
-        return !context.getGameInput().isRight() && !context.getGameInput().isLeft();
+        return !context.getGameInput().isRightPressed() && !context.getGameInput().isLeftPressed();
     }
 
     @Override

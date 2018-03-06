@@ -33,47 +33,15 @@ public abstract class BoxCollider {
 
         if(collides){
             if(restore){
-                float l = Math.abs(collider.rectangle.x - this.rectangle.width - this.rectangle.x);
-                float t = Math.abs(collider.rectangle.y + collider.rectangle.height - this.rectangle.y);
-                float r = Math.abs(collider.rectangle.x + collider.rectangle.width - this.rectangle.x);
-                float b = Math.abs(collider.rectangle.y - this.rectangle.width - this.rectangle.y);
-
-                if(deltaX >= 0 && deltaY >= 0){
-                    //we move either left or btm
-                    if(l < b){
-                        this.rectangle.x -= l;
-                    } else {
-                        this.rectangle.y -= b;
-                    }
-                }
-                else if(deltaX < 0 && deltaY >= 0){
-                    //we move either right or btm
-                    if(r < b){
-                        this.rectangle.x += r;
-                    } else {
-                        this.rectangle.y -= b;
-                    }
-                }
-                else if(deltaX < 0 && deltaY < 0){
-                    //we move either right or top
-                    if(t < b){
-                        this.rectangle.x += r;
-                    } else {
-                        this.rectangle.y += t;
-                    }
-                }
-                else if(deltaX >= 0 && deltaY < 0){
-                    //we move either left or top
-                    if(l < b){
-                        this.rectangle.x -= l;
-                    } else {
-                        this.rectangle.y += t;
-                    }
-                }
+                this.restoreFromCollision(deltaX, deltaY, collider);
             }
             collider.onCollision(this);
         }
         return collides;
+    }
+
+    protected void restoreFromCollision(float deltaX, float deltaY, BoxCollider collider){
+        //do nothing
     }
 
     protected void onCollision(BoxCollider collider){

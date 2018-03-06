@@ -16,7 +16,7 @@ public class JumpTrigger extends AbstractStateTrigger {
 
     @Override
     public boolean isTriggered(Yoshi yoshi, Context context) {
-        return context.getGameInput().isUp();
+        return context.getGameInput().isUpDown();
     }
 
     @Override

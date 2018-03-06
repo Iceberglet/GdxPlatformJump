@@ -8,34 +8,34 @@ import com.minstudio.core.Resources;
 
 public class TextureLoader {
 
-    private Texture texture;
-    private TextureRegion[] frames;
+    private static Texture texture;
+    private static TextureRegion[] frames;
 
-    public TextureLoader() {
-        texture = Resources.getTexture("sprite/items.png");
+    public static void init() {
+        texture = Resources.getTexture("sprites/items.png");
 
         frames = new TextureRegion[9];
         TextureRegion[][] tempFrames = TextureRegion.split(texture, 32, 32);
         System.arraycopy(tempFrames[0], 0, frames, 0, 9);
     }
 
-    public TextureRegion getApple(){
+    public static TextureRegion getApple(){
         return frames[0];
     }
 
-    public TextureRegion getAppleGolden(){
+    public static TextureRegion getAppleGolden(){
         return frames[1];
     }
 
-    public TextureRegion getMelonHead(){
+    public static TextureRegion getMelonHead(){
         return frames[2];
     }
 
-    public TextureRegion[] getGoombas() {
+    public static TextureRegion[] getGoombas() {
         return Arrays.copyOfRange(frames, 3, 5);
     }
 
-    public TextureRegion getHardPlatform(){
+    public static TextureRegion getHardPlatform(){
         return frames[5];
     }
 }

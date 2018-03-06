@@ -1,11 +1,17 @@
 package com.minstudio.core.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Platform extends GameObject {
 
-    public Platform(Rectangle rectangle) {
-        super(rectangle);
+    public Platform(float x, float y) {
+        super(new Rectangle(x, y, 64, 7));
     }
 
+    @Override
+    public void draw(SpriteBatch batch) {
+        batch.draw(TextureLoader.getHardPlatform(), this.getRectangle().x, this.getRectangle().y);
+        batch.draw(TextureLoader.getHardPlatform(), this.getRectangle().x + 32, this.getRectangle().y);
+    }
 }

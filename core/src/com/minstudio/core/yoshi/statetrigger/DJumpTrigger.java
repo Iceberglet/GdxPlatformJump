@@ -16,7 +16,7 @@ public class DJumpTrigger extends AbstractStateTrigger {
 
     @Override
     public boolean isTriggered(Yoshi yoshi, Context context) {
-        return false;
+        return context.getGameInput().isUpDown();
     }
 
     @Override
