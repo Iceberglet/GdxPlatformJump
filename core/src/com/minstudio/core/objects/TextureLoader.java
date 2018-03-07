@@ -18,15 +18,15 @@ public class TextureLoader {
         System.arraycopy(tempFrames[0], 0, frames, 0, 9);
     }
 
-    public static TextureRegion getApple(){
+    public static TextureRegion getApple() {
         return frames[0];
     }
 
-    public static TextureRegion getAppleGolden(){
+    public static TextureRegion getAppleGolden() {
         return frames[1];
     }
 
-    public static TextureRegion getMelonHead(){
+    public static TextureRegion getMelonHead() {
         return frames[2];
     }
 
@@ -34,7 +34,7 @@ public class TextureLoader {
         return Arrays.copyOfRange(frames, 3, 5);
     }
 
-    public static TextureRegion getHardPlatform(){
+    public static TextureRegion getHardPlatform() {
         return frames[5];
     }
 }

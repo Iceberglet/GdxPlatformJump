@@ -1,5 +1,6 @@
 package com.minstudio.core.yoshi.statetrigger;
 
+import com.minstudio.core.Constants;
 import com.minstudio.core.Context;
 import com.minstudio.core.yoshi.Yoshi;
 
@@ -22,6 +23,6 @@ public class JumpTrigger extends AbstractStateTrigger {
     @Override
     public void doTrigger(Yoshi yoshi, Context context) {
         super.doTrigger(yoshi, context);
-        yoshi.getCurrentSpeed().y = Context.YOSHI_JUMP_SPEED;
+        yoshi.getCurrentSpeed().y = Constants.YOSHI_JUMP_SPEED;
     }
 }

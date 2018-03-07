@@ -7,6 +7,7 @@ public interface AbstractFactory<T extends GameObject> {
 
     /**
      * If no object is to be created in this frame, simply return null.
+     *
      * @param context the game context
      * @return new object. null to indicate no object created.
      * TODO: Maybe return more than one object?

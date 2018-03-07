@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.minstudio.core.Constants;
 import com.minstudio.core.Resources;
 import com.minstudio.core.objects.BoxCollider;
 import com.minstudio.core.objects.GameObject;
@@ -24,49 +25,19 @@ import com.minstudio.core.yoshi.statetrigger.TongueTrigger;
 
 public class Yoshi extends GameObject {
 
-    /**
-     * Each Yoshi.State has a corresponding Animation
-     */
-    public enum State {
-        IDLE(0, YoshiAnimation.AnimationType.NORMAL),
-        JUMP(7, YoshiAnimation.AnimationType.JUMP),
-        DJUMP(7, YoshiAnimation.AnimationType.JUMP),
-        RUN(6, YoshiAnimation.AnimationType.RUN),
-        HIT(10, YoshiAnimation.AnimationType.HIT),
-        TONGUE(8, YoshiAnimation.AnimationType.TONGUE),
-        EAT(9, YoshiAnimation.AnimationType.EAT);
-
-        public final int priority;
-        public final YoshiAnimation.AnimationType animationType;
-        Set<AbstractStateTrigger> triggers = new HashSet<>();
-
-        State(int priority, YoshiAnimation.AnimationType animationType) {
-            this.priority = priority;
-            this.animationType = animationType;
-        }
-
-        private void setTriggers(AbstractStateTrigger... triggers) {
-            this.triggers.addAll(Arrays.asList(triggers));
-        }
-
-        public Set<AbstractStateTrigger> getTriggers() {
-            return triggers;
-        }
-    }
-
     static {
         //triggers initialization
         EatTrigger eatTrigger = new EatTrigger();
-        AnimationStopTrigger stopEatTrigger = new AnimationStopTrigger(YoshiAnimation.EAT_DURATION);
+        AnimationStopTrigger stopEatTrigger = new AnimationStopTrigger(Constants.EAT_DURATION);
         DJumpTrigger dJumpTrigger = new DJumpTrigger();
         JumpTrigger jumpTrigger = new JumpTrigger();
-        AnimationStopTrigger recoverFromHitTrigger = new AnimationStopTrigger(YoshiAnimation.HIT_DURATION);
+        AnimationStopTrigger recoverFromHitTrigger = new AnimationStopTrigger(Constants.HIT_DURATION);
         RunStartTrigger runStartTrigger = new RunStartTrigger();
         RunStopTrigger runStopTrigger = new RunStopTrigger();
         ToBeHitTrigger toBeHitTrigger = new ToBeHitTrigger();
         TongueTrigger tongueTrigger = new TongueTrigger();
         SteppedOnGroundTrigger steppedOnGroundTrigger = new SteppedOnGroundTrigger();
-        AnimationStopTrigger tongueStopTrigger = new AnimationStopTrigger(YoshiAnimation.TONGUE_DURATION);
+        AnimationStopTrigger tongueStopTrigger = new AnimationStopTrigger(Constants.TONGUE_DURATION);
 
         State.IDLE.setTriggers(eatTrigger, jumpTrigger, toBeHitTrigger, runStartTrigger, tongueTrigger);
         State.JUMP.setTriggers(steppedOnGroundTrigger, dJumpTrigger, toBeHitTrigger, tongueTrigger);
@@ -77,6 +48,13 @@ public class Yoshi extends GameObject {
         State.EAT.setTriggers(toBeHitTrigger, stopEatTrigger);
     }
 
+    //cleared every update
+    //-1: no collision
+    // 1: top
+    // 2: right
+    // 3: btm
+    // 4: left
+    public int previousCollisionDirection = -1;
     private Texture img;
 
     private boolean isFacingRight;
@@ -130,24 +108,15 @@ public class Yoshi extends GameObject {
     public void draw(SpriteBatch batch) {
         YoshiAnimation ani = this.isFacingRight ? yoshiAnimationRight : yoshiAnimationLeft;
         ani.draw(batch, this.getPosition(), currentState.animationType, currentStateDuration / 1000f);
+
+        //TODO: draw melon hat
+        //TODO: draw jump effect
     }
 
     @Override
     protected void onCollision(BoxCollider collider) {
         //
     }
-
-    public void dispose() {
-        img.dispose();
-    }
-
-    //cleared every update
-    //-1: no collision
-    // 1: top
-    // 2: right
-    // 3: btm
-    // 4: left
-    public int previousCollisionDirection = -1;
 
     @Override
     protected void restoreFromCollision(float deltaX, float deltaY, BoxCollider collider) {
@@ -156,9 +125,9 @@ public class Yoshi extends GameObject {
         float r = Math.abs(collider.getRectangle().x + collider.getRectangle().width - this.getRectangle().x);
         float b = Math.abs(collider.getRectangle().y - this.getRectangle().width - this.getRectangle().y);
 
-        if(deltaX >= 0 && deltaY >= 0){
+        if (deltaX >= 0 && deltaY >= 0) {
             //we move either left or btm
-            if(l < b){
+            if (l < b) {
                 this.getRectangle().x -= l;
                 this.currentSpeed.x = 0f;
                 this.previousCollisionDirection = 2;
@@ -167,10 +136,9 @@ public class Yoshi extends GameObject {
                 this.currentSpeed.y = 0f;
                 this.previousCollisionDirection = 1;
             }
-        }
-        else if(deltaX < 0 && deltaY >= 0){
+        } else if (deltaX < 0 && deltaY >= 0) {
             //we move either right or btm
-            if(r < b){
+            if (r < b) {
                 this.getRectangle().x += r;
                 this.currentSpeed.x = 0f;
                 this.previousCollisionDirection = 4;
@@ -179,10 +147,9 @@ public class Yoshi extends GameObject {
                 this.currentSpeed.y = 0f;
                 this.previousCollisionDirection = 1;
             }
-        }
-        else if(deltaX < 0 && deltaY < 0){
+        } else if (deltaX < 0 && deltaY < 0) {
             //we move either right or top
-            if(r < t){
+            if (r < t) {
                 this.getRectangle().x += r;
                 this.currentSpeed.x = 0f;
                 this.previousCollisionDirection = 4;
@@ -191,10 +158,9 @@ public class Yoshi extends GameObject {
                 this.currentSpeed.y = 0f;
                 this.previousCollisionDirection = 3;
             }
-        }
-        else if(deltaX >= 0 && deltaY < 0){
+        } else if (deltaX >= 0 && deltaY < 0) {
             //we move either left or top
-            if(l < t){
+            if (l < t) {
                 this.getRectangle().x -= l;
                 this.currentSpeed.x = 0f;
                 this.previousCollisionDirection = 2;
@@ -203,6 +169,36 @@ public class Yoshi extends GameObject {
                 this.currentSpeed.y = 0f;
                 this.previousCollisionDirection = 3;
             }
+        }
+    }
+
+    /**
+     * Each Yoshi.State has a corresponding Animation
+     */
+    public enum State {
+        IDLE(0, YoshiAnimation.AnimationType.NORMAL),
+        JUMP(7, YoshiAnimation.AnimationType.JUMP),
+        DJUMP(7, YoshiAnimation.AnimationType.JUMP),
+        RUN(6, YoshiAnimation.AnimationType.RUN),
+        HIT(10, YoshiAnimation.AnimationType.HIT),
+        TONGUE(8, YoshiAnimation.AnimationType.TONGUE),
+        EAT(9, YoshiAnimation.AnimationType.EAT);
+
+        public final int priority;
+        public final YoshiAnimation.AnimationType animationType;
+        Set<AbstractStateTrigger> triggers = new HashSet<>();
+
+        State(int priority, YoshiAnimation.AnimationType animationType) {
+            this.priority = priority;
+            this.animationType = animationType;
+        }
+
+        public Set<AbstractStateTrigger> getTriggers() {
+            return triggers;
+        }
+
+        private void setTriggers(AbstractStateTrigger... triggers) {
+            this.triggers.addAll(Arrays.asList(triggers));
         }
     }
 }

@@ -6,6 +6,7 @@ import com.minstudio.core.yoshi.Yoshi;
 public interface StateTrigger {
     /**
      * function called when the state this trigger belongs to becomes active.
+     *
      * @param yoshi
      * @param context
      */
