@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -11,18 +12,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.minstudio.GameInput;
-import com.minstudio.GameMain;
+import com.minstudio.core.objectFactories.GameObjectFactory;
 import com.minstudio.core.objects.GameObject;
-import com.minstudio.core.objects.Platform;
 import com.minstudio.core.yoshi.Logger;
 import com.minstudio.core.yoshi.Yoshi;
 import com.minstudio.core.yoshi.statetrigger.AbstractStateTrigger;
 
 public class Context {
-
-    private Collection<GameObject> gameObjects; //eateables
-
-    private Collection<GameObject> hardObjects = new ArrayList<>(); //platforms
 
     private Yoshi yoshi;
 
@@ -32,14 +28,22 @@ public class Context {
 
     private long currentTimestamp;
 
+    private Collection<GameObject> objects = new ArrayList<>();
+
+    private GameObjectFactory gameObjectFactory = new GameObjectFactory();
+
     public Context(Camera camera, Yoshi yoshi, GameInput gameInput) {
         this.yoshi = yoshi;
         this.gameInput = gameInput;
         this.camera = camera;
         this.currentTimestamp = 0L;
-        //TODO: remove test
-        hardObjects.add(new Platform(128, 256));
-        hardObjects.add(new Platform(128, 360));
+        createObjects();
+    }
+
+    private void createObjects(){
+        while(gameObjectFactory.shouldCreateObjects(camera.position.y)){
+            objects.addAll(gameObjectFactory.create());
+        }
     }
 
     /**
@@ -82,7 +86,7 @@ public class Context {
         //collision checks for other objects (e.g. yoshi eats apple)
 
         //collision checks for movement-impeding objects (e.g. yoshi stops falling / stops going left or right)
-        this.hardObjects.forEach(ho -> yoshi.collidesWith(ho, true));
+        this.objects.forEach(ho -> yoshi.collidesWith(ho, ho.isHardObject()));
 
         //register all collided objects
 
@@ -103,6 +107,14 @@ public class Context {
         float posY = Math.min(Constants.CAMERA_HEIGHT / 2 + camera.position.y - 32, yoshi.getPosition().y);
         yoshi.setPosition(posX, posY);
 
+        createObjects();
+        //remove out of scope objects (
+        this.objects.removeAll(
+                this.objects.stream()
+                    .filter(this::isObjectOufOfScope)
+                    .collect(Collectors.toList())
+        );
+
 //        Logger.info(this, yoshi.getCurrentState() + " " + yoshi.getCurrentSpeed() + " " + yoshi.getPosition());
     }
 
@@ -121,7 +133,7 @@ public class Context {
 
     public void render(SpriteBatch batch) {
         //render the scene
-        hardObjects.forEach(ho -> ho.draw(batch));
+        this.objects.forEach(ho -> ho.draw(batch));
         yoshi.draw(batch);
     }
 }

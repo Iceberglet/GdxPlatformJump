@@ -18,7 +18,7 @@ public class YoshiAnimation {
     private Map<AnimationType, Animation<TextureRegion>> animations = new HashMap<>();
 
     YoshiAnimation(Texture img, boolean horizontalFlip) {
-        int FRAME_LENGTH = 12;
+        int FRAME_LENGTH = 13;
         int FRAME_SIZE = 48;
         TextureRegion[] frames = new TextureRegion[FRAME_LENGTH];
         TextureRegion[][] tempFrames = TextureRegion.split(img, FRAME_SIZE, FRAME_SIZE);
@@ -35,7 +35,7 @@ public class YoshiAnimation {
 
         animations.put(AnimationType.RUN, new Animation<>(Constants.RUNNING_DURATION / 6000f, Arrays.copyOfRange(frames, 0, 6)));
         animations.put(AnimationType.NORMAL, new Animation<>(1f, frames[3]));
-        animations.put(AnimationType.HIT, new Animation<>(Constants.HIT_DURATION, frames[10]));
+        animations.put(AnimationType.HIT, new Animation<>(Constants.HIT_DURATION / 3000f, frames[10], frames[12]));
         animations.put(AnimationType.TONGUE, new Animation<>(Constants.TONGUE_DURATION, frames[6]));
         animations.put(AnimationType.EAT, new Animation<>(Constants.EAT_DURATION / 4000f, Arrays.copyOfRange(frames, 7, 10)));
         animations.put(AnimationType.JUMP, new Animation<>(1f, frames[11]));

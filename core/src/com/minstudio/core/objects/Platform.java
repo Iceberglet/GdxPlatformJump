@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Platform extends GameObject {
 
     public Platform(float x, float y) {
-        super(new Rectangle(x, y, 64, 7));
+        super(new Rectangle(x, y, 64, 7), true);
     }
 
     @Override

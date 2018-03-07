@@ -66,7 +66,7 @@ public class Yoshi extends GameObject {
     private YoshiAnimation yoshiAnimationRight;
 
     public Yoshi(Rectangle rectangle) {
-        super(rectangle);
+        super(rectangle, false);
         img = Resources.getTexture("sprites/yoshi.png");
         this.isFacingRight = true;
         this.currentState = State.IDLE;

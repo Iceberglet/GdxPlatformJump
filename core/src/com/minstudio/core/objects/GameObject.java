@@ -7,9 +7,15 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class GameObject extends BoxCollider {
 
     private Vector2 pos = new Vector2();
+    private final boolean isHardObject;
 
-    public GameObject(Rectangle rectangle) {
+    public GameObject(Rectangle rectangle, boolean isHardObject) {
         super(rectangle);
+        this.isHardObject = isHardObject;
+    }
+
+    public boolean isHardObject() {
+        return isHardObject;
     }
 
     public abstract void draw(SpriteBatch batch);

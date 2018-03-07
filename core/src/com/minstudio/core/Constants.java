@@ -10,11 +10,14 @@ public class Constants {
     //physics and speed
     public static float G = -0.0013f; //downwards
     public static float MAX_DOWNWARD_SPEED = -0.25f;
-    public static float YOSHI_HORIZONTAL_SPEED = 0.075f;
+    public static float YOSHI_HORIZONTAL_SPEED = 0.095f;
     public static float YOSHI_JUMP_SPEED = 0.46f;
-    public static float CAMERA_ASCEND = 0.01f;
+    public static float CAMERA_ASCEND = 0.02f;
 
     //Camera
     public static final int CAMERA_WIDTH = 256 + 128;
     public static final int CAMERA_HEIGHT = 512;
+
+    //For Object creation
+    public static final int PLATFORM_GAP = 80;
 }

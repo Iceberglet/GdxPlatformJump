@@ -14,7 +14,7 @@ public abstract class AbstractStateTrigger implements StateTrigger {
 
     @Override
     public void resetTrigger(Yoshi yoshi, Context context) {
-        Logger.info(this, "reset");
+//        Logger.info(this, "reset");
     }
 
     @Override
@@ -24,6 +24,6 @@ public abstract class AbstractStateTrigger implements StateTrigger {
 
     @Override
     public void doTrigger(Yoshi yoshi, Context context) {
-        Logger.info(this, "triggered");
+//        Logger.info(this, "triggered");
     }
 }

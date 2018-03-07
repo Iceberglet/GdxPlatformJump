@@ -1,17 +1,35 @@
 package com.minstudio.core.objectFactories;
 
-import com.minstudio.core.Context;
+import java.util.Collection;
+
+import com.minstudio.core.Constants;
 import com.minstudio.core.objects.GameObject;
 
-public interface AbstractFactory<T extends GameObject> {
+public abstract class AbstractFactory {
+
+    private int currentProductionLevel = -Constants.CAMERA_HEIGHT;
 
     /**
-     * If no object is to be created in this frame, simply return null.
-     *
-     * @param context the game context
-     * @return new object. null to indicate no object created.
-     * TODO: Maybe return more than one object?
+     * called every frame to determine whether this factory should produce objects
+     * @return yes or no
      */
-    T create(Context context);
+    public final boolean shouldCreateObjects(float cameraY){
+        if(currentProductionLevel < cameraY + Constants.CAMERA_HEIGHT){
+            currentProductionLevel += Constants.CAMERA_HEIGHT;
+            return true;
+        }
+        return false;
+    }
+
+    public int getCurrentProductionLevel() {
+        return currentProductionLevel;
+    }
+
+    /**
+     * Returns the set of integers
+     *
+     * @return new object. null to indicate no object created.
+     */
+    public abstract Collection<GameObject> create();
 
 }
