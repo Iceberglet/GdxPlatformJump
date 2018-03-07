@@ -30,7 +30,7 @@ public abstract class BoxCollider {
             if (restore) {
                 this.restoreFromCollision(deltaX, deltaY, collider);
             }
-            collider.onCollision(this);
+            this.onCollision(collider);
         }
         return collides;
     }

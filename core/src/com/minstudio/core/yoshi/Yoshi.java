@@ -40,12 +40,12 @@ public class Yoshi extends GameObject {
         AnimationStopTrigger tongueStopTrigger = new AnimationStopTrigger(Constants.TONGUE_DURATION);
 
         State.IDLE.setTriggers(eatTrigger, jumpTrigger, toBeHitTrigger, runStartTrigger, tongueTrigger);
-        State.JUMP.setTriggers(steppedOnGroundTrigger, dJumpTrigger, toBeHitTrigger, tongueTrigger);
-        State.DJUMP.setTriggers(steppedOnGroundTrigger, toBeHitTrigger, tongueTrigger);
+        State.JUMP.setTriggers(steppedOnGroundTrigger, dJumpTrigger, toBeHitTrigger, tongueTrigger, eatTrigger);
+        State.DJUMP.setTriggers(steppedOnGroundTrigger, toBeHitTrigger, tongueTrigger, eatTrigger);
         State.RUN.setTriggers(runStopTrigger, toBeHitTrigger, tongueTrigger, eatTrigger, jumpTrigger);
         State.HIT.setTriggers(recoverFromHitTrigger);
         State.TONGUE.setTriggers(toBeHitTrigger, tongueStopTrigger, eatTrigger);
-        State.EAT.setTriggers(toBeHitTrigger, stopEatTrigger);
+        State.EAT.setTriggers(steppedOnGroundTrigger, toBeHitTrigger, stopEatTrigger, eatTrigger);
     }
 
     //cleared every update
@@ -55,6 +55,7 @@ public class Yoshi extends GameObject {
     // 3: btm
     // 4: left
     public int previousCollisionDirection = -1;
+    public BoxCollider previousCollided = null;
     private Texture img;
 
     private boolean isFacingRight;
@@ -102,6 +103,7 @@ public class Yoshi extends GameObject {
         Vector2 pos = this.getPosition();
         this.setPosition(deltaTime * this.currentSpeed.x + pos.x, deltaTime * this.currentSpeed.y + pos.y);
         this.previousCollisionDirection = -1;
+        this.previousCollided = null;
     }
 
     @Override
@@ -115,7 +117,8 @@ public class Yoshi extends GameObject {
 
     @Override
     protected void onCollision(BoxCollider collider) {
-        //
+//        Logger.info(this, "Collision with " + collider);
+        previousCollided = collider;
     }
 
     @Override

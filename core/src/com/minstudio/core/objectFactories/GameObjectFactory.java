@@ -5,7 +5,10 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.minstudio.core.Constants;
+import com.minstudio.core.objects.AppleGolden;
+import com.minstudio.core.objects.AppleNormal;
 import com.minstudio.core.objects.GameObject;
+import com.minstudio.core.objects.MelonHat;
 import com.minstudio.core.objects.Platform;
 
 public class GameObjectFactory extends AbstractFactory {
@@ -28,6 +31,23 @@ public class GameObjectFactory extends AbstractFactory {
             float randomizableOffset = 64f;
             float xPos = platformPos * Constants.CAMERA_WIDTH / 4 + randomizableOffset * MathUtils.random();
             res.add(new Platform(xPos, nextPlatformStart));
+
+
+            //position for an eatable
+            float eatableRandom = MathUtils.random();
+            if(eatableRandom < 0.5f){
+                float posX = MathUtils.random(xPos-12f, xPos + 72f);
+                float posY = MathUtils.random(nextPlatformStart + 12f, nextPlatformStart + 30f);
+                if(eatableRandom < 0.035f){
+                    res.add(new MelonHat(posX, posY));
+                }
+                else if(eatableRandom < 0.07f){
+                    res.add(new AppleGolden(posX, posY));
+                }
+                else {
+                    res.add(new AppleNormal(posX, posY));
+                }
+            }
 
             //double down!
             int another = randomX();

@@ -3,6 +3,7 @@ package com.minstudio.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.minstudio.GameInput;
 import com.minstudio.core.objectFactories.GameObjectFactory;
+import com.minstudio.core.objects.Eatable;
 import com.minstudio.core.objects.GameObject;
 import com.minstudio.core.yoshi.Logger;
 import com.minstudio.core.yoshi.Yoshi;
@@ -86,7 +88,7 @@ public class Context {
         //collision checks for other objects (e.g. yoshi eats apple)
 
         //collision checks for movement-impeding objects (e.g. yoshi stops falling / stops going left or right)
-        this.objects.forEach(ho -> yoshi.collidesWith(ho, ho.isHardObject()));
+        List<GameObject> eaten = this.objects.stream().filter(ho -> yoshi.collidesWith(ho, ho.isHardObject()) && ho instanceof Eatable).collect(Collectors.toList());
 
         //register all collided objects
 
@@ -109,6 +111,7 @@ public class Context {
 
         createObjects();
         //remove out of scope objects (
+        this.objects.removeAll(eaten);
         this.objects.removeAll(
                 this.objects.stream()
                     .filter(this::isObjectOufOfScope)
