@@ -1,7 +1,6 @@
 package com.minstudio.core.yoshi.statetrigger;
 
 import com.minstudio.core.Context;
-import com.minstudio.core.yoshi.Logger;
 import com.minstudio.core.yoshi.Yoshi;
 
 public abstract class AbstractStateTrigger implements StateTrigger {

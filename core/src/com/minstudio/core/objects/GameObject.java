@@ -1,8 +1,12 @@
 package com.minstudio.core.objects;
 
+import java.util.Set;
+
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.minstudio.core.animation.DrawableTexture;
 
 public abstract class GameObject extends BoxCollider {
 
@@ -29,5 +33,9 @@ public abstract class GameObject extends BoxCollider {
     public void setPosition(float x, float y) {
         this.getRectangle().x = x;
         this.getRectangle().y = y;
+    }
+
+    public Set<Animation<DrawableTexture>> getExitAnimation(){
+        return null;
     }
 }

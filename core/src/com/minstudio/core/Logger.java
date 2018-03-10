@@ -1,4 +1,4 @@
-package com.minstudio.core.yoshi;
+package com.minstudio.core;
 
 import com.badlogic.gdx.Gdx;
 

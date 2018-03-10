@@ -12,7 +12,6 @@ import com.minstudio.core.Context;
 import com.minstudio.core.GridRenderer;
 import com.minstudio.core.Resources;
 import com.minstudio.core.objects.TextureLoader;
-import com.minstudio.core.yoshi.Logger;
 import com.minstudio.core.yoshi.Yoshi;
 
 public class GameMain extends ApplicationAdapter {

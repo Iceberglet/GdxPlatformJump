@@ -5,18 +5,22 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.minstudio.GameInput;
+import com.minstudio.core.animation.AnimationManager;
+import com.minstudio.core.animation.AnimationManagerImpl;
+import com.minstudio.core.animation.DrawableTexture;
 import com.minstudio.core.objectFactories.GameObjectFactory;
 import com.minstudio.core.objects.Eatable;
 import com.minstudio.core.objects.GameObject;
-import com.minstudio.core.yoshi.Logger;
 import com.minstudio.core.yoshi.Yoshi;
 import com.minstudio.core.yoshi.statetrigger.AbstractStateTrigger;
 
@@ -30,6 +34,8 @@ public class Context {
 
     private long currentTimestamp;
 
+    private AnimationManager animationManager;
+
     private Collection<GameObject> objects = new ArrayList<>();
 
     private GameObjectFactory gameObjectFactory = new GameObjectFactory();
@@ -39,6 +45,7 @@ public class Context {
         this.gameInput = gameInput;
         this.camera = camera;
         this.currentTimestamp = 0L;
+        this.animationManager = new AnimationManagerImpl();
         createObjects();
     }
 
@@ -89,6 +96,12 @@ public class Context {
 
         //collision checks for movement-impeding objects (e.g. yoshi stops falling / stops going left or right)
         List<GameObject> eaten = this.objects.stream().filter(ho -> yoshi.collidesWith(ho, ho.isHardObject()) && ho instanceof Eatable).collect(Collectors.toList());
+        eaten.forEach(obj->{
+            Set<Animation<DrawableTexture>> animations = obj.getExitAnimation();
+            if(animations != null){
+                animations.forEach(a -> animationManager.submit(a, currentTimestamp));
+            }
+        });
 
         //register all collided objects
 
@@ -138,5 +151,6 @@ public class Context {
         //render the scene
         this.objects.forEach(ho -> ho.draw(batch));
         yoshi.draw(batch);
+        animationManager.draw(this.currentTimestamp, batch);
     }
 }

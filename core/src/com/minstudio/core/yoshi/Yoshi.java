@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.minstudio.core.Constants;
+import com.minstudio.core.Logger;
 import com.minstudio.core.Resources;
 import com.minstudio.core.objects.BoxCollider;
 import com.minstudio.core.objects.GameObject;
@@ -89,7 +90,7 @@ public class Yoshi extends GameObject {
     }
 
     public void setCurrentState(State newState) {
-        Logger.info(this, "State Updated to " + newState);
+//        Logger.info(this, "State Updated to " + newState);
         this.currentState = newState;
         this.currentStateDuration = 0L;
     }
