@@ -25,4 +25,9 @@ public abstract class AbstractStateTrigger implements StateTrigger {
     public void doTrigger(Yoshi yoshi, Context context) {
 //        Logger.info(this, "triggered");
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }

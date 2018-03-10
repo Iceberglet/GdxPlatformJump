@@ -1,6 +1,7 @@
 package com.minstudio.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -106,11 +107,22 @@ public class Context {
         //register all collided objects
 
         //yoshi state trigger tests
-        Optional<AbstractStateTrigger> theTriggerOp = yoshi.getCurrentState().getTriggers().stream()
-                .filter(t -> t.isTriggered(yoshi, this))
-                .max(Comparator.comparingInt(a -> a.toState.priority));
-        if (theTriggerOp.isPresent()) {
-            AbstractStateTrigger theTrigger = theTriggerOp.get();
+//        Optional<AbstractStateTrigger> theTriggerOp = yoshi.getCurrentState().getTriggers().stream()
+//                .filter(t -> t.isTriggered(yoshi, this))
+//                .max(Comparator.comparingInt(a -> a.toState.priority));
+//        if (theTriggerOp.isPresent()) {
+//            AbstractStateTrigger theTrigger = theTriggerOp.get();
+//            theTrigger.doTrigger(yoshi, this);
+//            yoshi.setCurrentState(theTrigger.toState);
+//            theTrigger.toState.getTriggers().forEach(t -> t.resetTrigger(yoshi, this));
+//        }
+
+
+        List<AbstractStateTrigger> theTriggerOp = yoshi.getCurrentState().getTriggers().stream()
+                .filter(t -> t.isTriggered(yoshi, this)).collect(Collectors.toList());
+        if(!theTriggerOp.isEmpty()){
+            Logger.info(this, "Triggered States: " + Arrays.toString(theTriggerOp.toArray()));
+            AbstractStateTrigger theTrigger = theTriggerOp.stream().max(Comparator.comparingInt(i->i.toState.priority)).get();
             theTrigger.doTrigger(yoshi, this);
             yoshi.setCurrentState(theTrigger.toState);
             theTrigger.toState.getTriggers().forEach(t -> t.resetTrigger(yoshi, this));

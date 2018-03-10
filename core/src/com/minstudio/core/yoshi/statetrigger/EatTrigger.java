@@ -18,10 +18,7 @@ public class EatTrigger extends AbstractStateTrigger {
 
     @Override
     public boolean isTriggered(Yoshi yoshi, Context context) {
-        boolean res = yoshi.previousCollided instanceof Eatable;
-        if(res)
-            Logger.info(this, "Yoshi ate me!");
-        return res;
+        return yoshi.previousCollided instanceof Eatable;
     }
 
     @Override

@@ -46,7 +46,7 @@ public class Yoshi extends GameObject {
         State.RUN.setTriggers(runStopTrigger, toBeHitTrigger, tongueTrigger, eatTrigger, jumpTrigger);
         State.HIT.setTriggers(recoverFromHitTrigger);
         State.TONGUE.setTriggers(toBeHitTrigger, tongueStopTrigger, eatTrigger);
-        State.EAT.setTriggers(steppedOnGroundTrigger, toBeHitTrigger, stopEatTrigger, eatTrigger);
+        State.EAT.setTriggers(toBeHitTrigger, stopEatTrigger, eatTrigger);
     }
 
     //cleared every update
@@ -90,7 +90,7 @@ public class Yoshi extends GameObject {
     }
 
     public void setCurrentState(State newState) {
-//        Logger.info(this, "State Updated to " + newState);
+        Logger.info(this, "State Updated to " + newState);
         this.currentState = newState;
         this.currentStateDuration = 0L;
     }

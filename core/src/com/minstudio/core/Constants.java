@@ -4,7 +4,7 @@ public class Constants {
 
     //animation related
     public static final long RUNNING_DURATION = 600L;
-    public static final long EAT_DURATION = 1600L;
+    public static final long EAT_DURATION = 300L;
     public static final long HIT_DURATION = 400L;
     public static final long TONGUE_DURATION = 600L;
     //physics and speed
