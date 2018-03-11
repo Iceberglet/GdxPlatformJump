@@ -65,13 +65,6 @@ public class Context {
         return currentTimestamp;
     }
 
-    private void updateYoshiState(Yoshi.State state, boolean facingRight) {
-        if (state != yoshi.getCurrentState() || facingRight != yoshi.isFacingRight()) {
-            yoshi.setCurrentState(state);
-            yoshi.setFacingRight(facingRight);
-        }
-    }
-
     public void update() {
         long deltaTime = Math.round(Gdx.graphics.getDeltaTime() * 1000);
         this.currentTimestamp += deltaTime;

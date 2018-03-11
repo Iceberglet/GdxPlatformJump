@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.minstudio.core.Constants;
 import com.minstudio.core.Context;
 import com.minstudio.core.GridRenderer;
@@ -41,10 +42,15 @@ public class GameMain extends ApplicationAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
 //		camera.zoom = 0.25f;
-        yoshi = new Yoshi(new Rectangle(128, 280, 32, 32));
-        context = new Context(camera, yoshi, gameInput);
         gridRenderer = new GridRenderer(batch, 0, 0, 6, 100, 64, 1f);
         TextureLoader.init();
+        initialize();
+    }
+
+    private void initialize(){
+        yoshi = new Yoshi(new Rectangle(128, 280, 32, 32));
+        context = new Context(camera, yoshi, gameInput);
+        camera.position.y = Constants.CAMERA_HEIGHT / 2;
     }
 
     @Override
@@ -76,7 +82,7 @@ public class GameMain extends ApplicationAdapter {
 
             //await user input to restart
             if (gameInput.isSpaceDown()) {
-                create();
+                initialize();
                 gameOver = false;
                 return;
             }
