@@ -57,7 +57,6 @@ public class Yoshi extends GameObject {
     // 4: left
     public int previousCollisionDirection = -1;
     public BoxCollider previousCollided = null;
-    private Texture img;
 
     private boolean isFacingRight;
 
@@ -69,7 +68,7 @@ public class Yoshi extends GameObject {
 
     public Yoshi(Rectangle rectangle) {
         super(rectangle, false);
-        img = Resources.getTexture("sprites/yoshi.png");
+        Texture img = Resources.getTexture("sprites/yoshi.png");
         this.isFacingRight = true;
         this.currentState = State.IDLE;
         this.currentSpeed = new Vector2(0, 0);  //cannot use Vector2.Zero

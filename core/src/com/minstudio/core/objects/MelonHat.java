@@ -24,6 +24,6 @@ public class MelonHat extends Eatable {
 
     @Override
     public Set<Animation<DrawableTexture>> getExitAnimation() {
-        return Util.asSet(DisappearingAnimation.getSequence(0.05f, this.getPosition(), TextureLoader.getApple(), 10));
+        return Util.asSet(DisappearingAnimation.getSequence(0.05f, this.getPosition(), TextureLoader.getMelonHead(), 10));
     }
 }

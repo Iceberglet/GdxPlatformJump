@@ -1,6 +1,7 @@
 package com.minstudio.core.yoshi.statetrigger;
 
 import com.minstudio.core.Context;
+import com.minstudio.core.audio.AudioManager;
 import com.minstudio.core.objects.Eatable;
 import com.minstudio.core.Logger;
 import com.minstudio.core.yoshi.Yoshi;

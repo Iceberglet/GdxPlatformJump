@@ -9,9 +9,9 @@ public class Constants {
     public static final long TONGUE_DURATION = 600L;
     //physics and speed
     public static float G = -0.0013f; //downwards
-    public static float MAX_DOWNWARD_SPEED = -0.25f;
+    public static float MAX_DOWNWARD_SPEED = -0.28f;
     public static float YOSHI_HORIZONTAL_SPEED = 0.095f;
-    public static float YOSHI_JUMP_SPEED = 0.46f;
+    public static float YOSHI_JUMP_SPEED = 0.52f;
     public static float CAMERA_ASCEND = 0.02f;
 
     //Camera

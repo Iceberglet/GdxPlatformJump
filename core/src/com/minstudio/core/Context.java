@@ -19,6 +19,7 @@ import com.minstudio.GameInput;
 import com.minstudio.core.animation.AnimationManager;
 import com.minstudio.core.animation.AnimationManagerImpl;
 import com.minstudio.core.animation.DrawableTexture;
+import com.minstudio.core.audio.AudioManager;
 import com.minstudio.core.objectFactories.GameObjectFactory;
 import com.minstudio.core.objects.Eatable;
 import com.minstudio.core.objects.GameObject;
@@ -95,32 +96,21 @@ public class Context {
             if(animations != null){
                 animations.forEach(a -> animationManager.submit(a, currentTimestamp));
             }
+            AudioManager.play(AudioManager.SoundEffect.POP);
         });
 
         //register all collided objects
 
-        //yoshi state trigger tests
-//        Optional<AbstractStateTrigger> theTriggerOp = yoshi.getCurrentState().getTriggers().stream()
-//                .filter(t -> t.isTriggered(yoshi, this))
-//                .max(Comparator.comparingInt(a -> a.toState.priority));
-//        if (theTriggerOp.isPresent()) {
-//            AbstractStateTrigger theTrigger = theTriggerOp.get();
-//            theTrigger.doTrigger(yoshi, this);
-//            yoshi.setCurrentState(theTrigger.toState);
-//            theTrigger.toState.getTriggers().forEach(t -> t.resetTrigger(yoshi, this));
-//        }
-
-
-        List<AbstractStateTrigger> theTriggerOp = yoshi.getCurrentState().getTriggers().stream()
-                .filter(t -> t.isTriggered(yoshi, this)).collect(Collectors.toList());
-        if(!theTriggerOp.isEmpty()){
-            Logger.info(this, "Triggered States: " + Arrays.toString(theTriggerOp.toArray()));
-            AbstractStateTrigger theTrigger = theTriggerOp.stream().max(Comparator.comparingInt(i->i.toState.priority)).get();
+        //yoshi state trigger tests and doTrigger
+        Optional<AbstractStateTrigger> theTriggerOp = yoshi.getCurrentState().getTriggers().stream()
+                .filter(t -> t.isTriggered(yoshi, this))
+                .max(Comparator.comparingInt(a -> a.toState.priority));
+        if (theTriggerOp.isPresent()) {
+            AbstractStateTrigger theTrigger = theTriggerOp.get();
             theTrigger.doTrigger(yoshi, this);
             yoshi.setCurrentState(theTrigger.toState);
             theTrigger.toState.getTriggers().forEach(t -> t.resetTrigger(yoshi, this));
         }
-
 
         //clamp Yoshi within view port
         float posX = MathUtils.clamp(yoshi.getPosition().x, 0f, Constants.CAMERA_WIDTH - 32);
@@ -141,6 +131,10 @@ public class Context {
 
     public GameInput getGameInput() {
         return gameInput;
+    }
+
+    public AnimationManager getAnimationManager() {
+        return animationManager;
     }
 
     public boolean isObjectOufOfScope(GameObject object){

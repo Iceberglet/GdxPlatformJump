@@ -12,6 +12,7 @@ import com.minstudio.core.Constants;
 import com.minstudio.core.Context;
 import com.minstudio.core.GridRenderer;
 import com.minstudio.core.Resources;
+import com.minstudio.core.audio.AudioManager;
 import com.minstudio.core.objects.TextureLoader;
 import com.minstudio.core.yoshi.Yoshi;
 
@@ -44,6 +45,7 @@ public class GameMain extends ApplicationAdapter {
 //		camera.zoom = 0.25f;
         gridRenderer = new GridRenderer(batch, 0, 0, 6, 100, 64, 1f);
         TextureLoader.init();
+        AudioManager.init();
         initialize();
     }
 
@@ -94,5 +96,6 @@ public class GameMain extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         Resources.dispose();
+        AudioManager.dispose();
     }
 }
